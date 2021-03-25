@@ -14,5 +14,10 @@ export default new Router({
       path: '*',
       redirect: '/'
     },
+    {
+      path: '/',
+      name: 'book',
+      component: require('@/components/book').default
+    }
   ]
 })

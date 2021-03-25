@@ -1,0 +1,1 @@
+{"faloo":{"test":"https://b.faloo.com/f/876212.html","bookname":"<h1 id=\"novelName\".*?</h1>","author":"<img class=\"rentouOne.*? />.*?</a>","coverUrl":"<img class=\"imgcss\".*?>","linkList":"<div class=\"DivTd\".*?</div>"}}

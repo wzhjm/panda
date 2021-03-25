@@ -1,8 +1,11 @@
 let state = {
   nav: "0",
   set_imported: false,
-  set_new_rule: true,
-  user_data: []
+  set_new_rule: false,
+  user_data: {},
+  user_book: {},
+  reflect: true,
+  cur_book: "",
 }
 
 const mutations = {

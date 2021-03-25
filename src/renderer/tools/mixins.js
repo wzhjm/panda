@@ -1,11 +1,12 @@
 // 定义一个混入对象
 const iconv = require("iconv-lite");
 const https = require("https");
-
+import { remote } from 'electron'
 const fs = require("fs");
 const path = require("path");
 var mixin1 = {
   methods: {
+    //获取标识
     get_web(a) {
       let b = a.split("/");
       for (let i of b) {
@@ -21,24 +22,78 @@ var mixin1 = {
         }
       }
     },
-    read_data(store) {
-      let _path = path.join(__dirname, "../data/data.json");
-      // console.log(_path);
+    read_user_book(store) {
+      let _path = path.join(remote.app.getPath('userData'), "/user_book.txt");
+      console.log(_path);
       fs.readFile(_path, "utf8", function (err, data) {
         if (!err) {
           store.commit("setState", {
-            user_data: JSON.parse(data),
+            user_book: JSON.parse(data) || {},
           });
-          console.log("读取成功！", store.state.Counter.user_data);
+          console.log("读取成功！", store.state.Counter.user_book);
+        } else {
+          console.log("读取失败！", err)
         }
       });
     },
-    write_data(store) {
-      let _path = path.join(__dirname, "../data/data.json");
+    write_user_book(store, message) {
+      let _path = path.join(remote.app.getPath('userData'), "/user_book.txt");
       console.log(_path);
-      let user_data = JSON.stringify(store.state.Counter.user_data);
+      message("可写路径" + _path);
+      console.log(store.state.Counter.user_book)
+      let a = {}
+      for (let k in store.state.Counter.user_book) {
+        if (k != "") {
+          a[k] = store.state.Counter.user_book[k]
+        }
+      }
+      // console.log(a)
+      let user_book = JSON.stringify(a);
+      console.log(user_book)
+      fs.writeFile(_path, user_book, function (err) {
+        if (err) {
+          console.log("写入失败！", err)
+          message("写入失败！");
+        } else {
+          console.log("写入成功！");
+          message("写入成功！");
+        }
+      });
+    },
+    read_data(store) {
+      let _path = path.join(remote.app.getPath('userData'), "/data.txt");
+      console.log(_path);
+      fs.readFile(_path, "utf8", function (err, data) {
+        if (!err) {
+          store.commit("setState", {
+            user_data: JSON.parse(data) || {},
+          });
+          console.log("读取成功！", store.state.Counter.user_data);
+        } else {
+          console.log("读取失败！", err)
+        }
+      });
+    },
+    write_data(store, message) {
+      let _path = path.join(remote.app.getPath('userData'), "/data.txt");
+      console.log(_path);
+      message("可写路径" + _path);
+      console.log(store.state.Counter.user_data)
+      let a = {}
+      for (let k in store.state.Counter.user_data) {
+        a[k] = store.state.Counter.user_data[k]
+      }
+      // console.log(a)
+      let user_data = JSON.stringify(a);
+      console.log(user_data)
       fs.writeFile(_path, user_data, function (err) {
-        if (!err) console.log("写入成功！");
+        if (err) {
+          console.log("写入失败！", err)
+          message("写入失败！");
+        } else {
+          console.log("写入成功！");
+          message("写入成功！");
+        }
       });
     },
     get_url(url, callback) {
@@ -103,6 +158,16 @@ var mixin1 = {
           let title = this.clean_div(i);
           // console.log(title);
           let url = this.get_href(i);
+
+          if (url.indexOf('https://') == -1 || url.indexOf('http://') == -1) {
+            if (url.indexOf('com') != -1) {
+              url = url.slice(url.indexOf('com') + 3, url.length)
+            }
+            if (url.indexOf('cn') != -1) {
+              url = url.slice(url.indexOf('cn') + 2, url.length)
+            }
+          }
+
           // console.log(url);
           if (title != "获取失败" && url != "获取失败") {
             let json = {
@@ -137,6 +202,51 @@ var mixin1 = {
       }
       return "获取失败";
     },
+    get_top(url) {
+      console.log(url)
+      if (url.indexOf('com') != -1) {
+        let a = url.indexOf('com') + 3
+        url = url.slice(0, a)
+      }
+      if (url.indexOf('cn') != -1) {
+        url = url.slice(0, url.indexOf('cn') + 2)
+      }
+      if (url.indexOf('net') != -1) {
+        url = url.slice(0, url.indexOf('net') + 3)
+      }
+      return url
+    },
+    //获取标题
+    zw_title(str, rs) {
+      let str2 = str.match(rs);
+      if (str2 != null) {
+        return this.clean_div(str2[0]);
+      }
+      return "获取失败";
+    },
+    //获取正文
+    zw_content(str, rs) {
+      // console.log(str)
+      // rs = '<div class="noveContent">.*?</div>'
+      let str3 = str.replace(new RegExp("(\r\n)|(\n)", "gm"), "");
+      let str2 = str3.match(new RegExp(rs, "mg"));
+      let str4 = str2[0].split('</p>')
+      let list = []
+      for (let i of str4) {
+        list.push(this.clean_div(i));
+      }
+      // console.log(list)
+      return list
+    },
+    //刷新
+    reflect() {
+      this.$store.commit("setState", {
+        reflect: false,
+      });
+      this.$store.commit("setState", {
+        reflect: true,
+      });
+    }
   },
 }
 export { mixin1 }

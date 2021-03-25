@@ -3,7 +3,9 @@
     <el-aside width="20%"><navigation /> </el-aside>
     <el-container>
       <el-header class="top">
-        <el-button type="primary" plain> 新建规则 </el-button>
+        <el-button type="primary" plain @click="open_new_rule()">
+          新建规则
+        </el-button>
         <el-button type="primary" plain @click="open_imported_online()">
           导入在线书页
         </el-button>
@@ -32,15 +34,24 @@ export default {
   data() {
     return {};
   },
+  created() {
+    this.read_user_book(this.$store);
+    this.read_data(this.$store);
+    // this.get_url("https://b.faloo.com/p/876212/1.html", (rs) => {
+    //   this.zw_content(rs);
+    // });
+  },
   methods: {
     open_imported_online() {
       this.$store.commit("setState", {
         set_imported: true,
       });
     },
-  },
-  created() {
-    this.read_data(this.$store);
+    open_new_rule() {
+      this.$store.commit("setState", {
+        set_new_rule: true,
+      });
+    },
   },
 };
 </script>
