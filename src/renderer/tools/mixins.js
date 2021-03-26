@@ -36,10 +36,12 @@ var mixin1 = {
         }
       });
     },
-    write_user_book(store, message) {
+    write_user_book(t) {
+      let store = t.$store;
+      let message = t.$message;
       let _path = path.join(remote.app.getPath('userData'), "/user_book.txt");
       console.log(_path);
-      message("可写路径" + _path);
+      // message("可写路径" + _path);
       console.log(store.state.Counter.user_book)
       let a = {}
       for (let k in store.state.Counter.user_book) {
@@ -56,7 +58,7 @@ var mixin1 = {
           message("写入失败！");
         } else {
           console.log("写入成功！");
-          message("写入成功！");
+          // message("写入成功！");
         }
       });
     },
@@ -74,7 +76,9 @@ var mixin1 = {
         }
       });
     },
-    write_data(store, message) {
+    write_data(t) {
+      let store = t.$store;
+      let message = t.$message;
       let _path = path.join(remote.app.getPath('userData'), "/data.txt");
       console.log(_path);
       message("可写路径" + _path);

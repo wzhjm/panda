@@ -40,6 +40,7 @@ export default {
     // this.get_url("https://b.faloo.com/p/876212/1.html", (rs) => {
     //   this.zw_content(rs);
     // });
+    // console.log(this.Str_Unicode("修真"));
   },
   methods: {
     open_imported_online() {

@@ -1,5 +1,17 @@
 <template>
   <el-container class="di">
+    <el-dialog
+      title="删除提醒"
+      :visible.sync="dialogVisible"
+      width="50%"
+      :before-close="handleClose"
+    >
+      <span>确认删除本书？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="del_book()"> 删 除 </el-button>
+      </span>
+    </el-dialog>
     <!-- 目录 -->
     <el-drawer
       title="目录"
@@ -31,13 +43,21 @@
         </el-tooltip>
       </el-col>
       <el-col :span="24" class="set">
+        <el-tooltip content="当前源页面" placement="right">
+          <el-button class="el-icon-s-unfold" @click="open_url"></el-button>
+        </el-tooltip>
+      </el-col>
+      <el-col :span="24" class="set">
         <el-tooltip content="阅读效果" placement="right">
           <el-button class="el-icon-s-open"></el-button>
         </el-tooltip>
       </el-col>
       <el-col :span="24" class="set">
         <el-tooltip content="删除书本" placement="right">
-          <el-button class="el-icon-delete" @click="del_book()"></el-button>
+          <el-button
+            class="el-icon-delete"
+            @click="dialogVisible = true"
+          ></el-button>
         </el-tooltip>
       </el-col>
     </el-aside>
@@ -88,7 +108,7 @@
           }
         "
       >
-        UP
+        TOP
       </div>
     </el-backtop>
   </el-container>
@@ -110,19 +130,23 @@ export default {
       test: "",
       drawer: false,
       direction: "ltr",
+      y_url: "",
+      dialogVisible: false,
     };
   },
   components: {},
   created() {
-    let cur_book = this.$store.state.Counter.cur_book;
-    let user_book = this.$store.state.Counter.user_book;
-    let user_data = this.$store.state.Counter.user_data;
+    let cur_book = this.$store.state.Counter.cur_book; //当前读的书
+    let user_book = this.$store.state.Counter.user_book; //书本合集
+    let user_data = this.$store.state.Counter.user_data; //规则
     console.log(user_book[cur_book]);
     this.book_data = user_book[cur_book];
     this.linkList_d = this.book_data.linkList_d;
     this.max_index = this.linkList_d.length;
     this.test = this.book_data.test;
     let logo = this.get_web(this.test);
+
+    this.cur_index = this.book_data.cur_index || 0;
     // console.log(logo);
     // console.log(user_data);
     this.user_data = user_data[logo + ""];
@@ -132,9 +156,16 @@ export default {
 
   methods: {
     init() {
+      this.$store.commit("cur_index", {
+        book_name: this.$store.state.Counter.cur_book,
+        cur_index: this.cur_index,
+      });
+      this.write_user_book(this);
+
       let url = this.linkList_d[this.cur_index].url;
       this.cur_title = this.linkList_d[this.cur_index].title;
       url = this.get_top(this.test) + url;
+      this.y_url = url;
       console.log(url);
       this.get_url(url, (rs) => {
         this.cur_content = this.zw_content(rs, this.user_data.zw_content);
@@ -149,7 +180,7 @@ export default {
     del_book() {
       let bookname_d = this.book_data.bookname_d;
       this.$store.commit("del_book", bookname_d);
-      this.write_user_book(this.$store, this.$message);
+      this.write_user_book(this);
       this.go_home();
     },
     on_pre() {
@@ -171,6 +202,9 @@ export default {
       this.cur_index = index;
       this.init();
       this.ml_close();
+    },
+    open_url() {
+      window.open(this.y_url, "_blank");
     },
   },
 };

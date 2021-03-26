@@ -13,6 +13,10 @@
         >本页有完整的目录，且目录点击进去，有完整的文本。</el-col
       >
       <el-col :span="24">理论上，你能看到多少，这软件就能导入多少。</el-col>
+      <el-col :span="24">
+        一个例子： {{ test }}
+        <el-button type="primary" @click="input = test">试试</el-button>
+      </el-col>
       <el-col :span="24" class="tab0">
         <el-col :span="18">
           <el-input v-model="input" placeholder="完整的URL"></el-input>
@@ -66,7 +70,8 @@ export default {
   mixins: [mixin1],
   data() {
     return {
-      input: "https://b.faloo.com/f/876212.html",
+      input: "",
+      test: "https://b.faloo.com/f/876212.html",
       ml: false,
       bookname_d: "",
       author_d: "",
@@ -88,6 +93,7 @@ export default {
     },
     set_identify() {
       let bs = this.get_web(this.input);
+      // console.log(bs);
       let is_bs = false;
       let user_data = this.$store.state.Counter.user_data;
       for (let k in user_data) {
@@ -120,10 +126,11 @@ export default {
       a[this.bookname_d].author_d = this.author_d;
       a[this.bookname_d].coverUrl_d = this.coverUrl_d;
       a[this.bookname_d].linkList_d = this.linkList_d;
+
       this.$store.commit("setState", {
         user_book: a,
       });
-      this.write_user_book(this.$store, this.$message);
+      this.write_user_book(this);
       this.ml_close();
       this.handleClose();
       this.reflect();

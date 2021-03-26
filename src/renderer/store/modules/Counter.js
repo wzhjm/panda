@@ -19,6 +19,11 @@ const mutations = {
   },
   del_book(state, book_name) {
     delete state.user_book[book_name]
+  },
+  cur_index(state, { book_name, cur_index }) {
+    console.log(book_name)
+    console.log(cur_index)
+    state.user_book[book_name].cur_index = cur_index
   }
 }
 

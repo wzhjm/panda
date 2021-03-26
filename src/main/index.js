@@ -2,6 +2,7 @@
 
 import { app, BrowserWindow } from 'electron'
 import '../renderer/store'
+const path = require('path')
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -25,7 +26,8 @@ function createWindow() {
     width: 1000,
     webPreferences: {
       nodeIntegration: true,
-      webSecurity: false
+      webSecurity: false,
+      preload: path.resolve(path.join(__dirname, 'source/preload.js'))
     }
   })
 
