@@ -2,12 +2,13 @@
   <el-dialog
     title="新建规则"
     :visible.sync="$store.state.Counter.set_new_rule"
-    width="50%"
+    width="80%"
     :before-close="handleClose"
   >
     <el-row>
       <!-- 测试书本地址 -->
       <el-col :span="24" class="tab0">
+        <el-col :span="3">测试书本地址</el-col>
         <el-col :span="15">
           <el-input v-model="input1" placeholder="测试书本地址"></el-input>
         </el-col>
@@ -23,6 +24,7 @@
       </el-col>
       <!-- 抓取小说题名 -->
       <el-col :span="24" class="tab0">
+        <el-col :span="3">抓取小说题名</el-col>
         <el-col :span="15">
           <el-input v-model="input2" placeholder="抓取小说题名"></el-input>
         </el-col>
@@ -38,6 +40,7 @@
       </el-col>
       <!-- 抓取小说作者 -->
       <el-col :span="24" class="tab0">
+        <el-col :span="3">抓取小说作者</el-col>
         <el-col :span="15">
           <el-input v-model="input3" placeholder="抓取小说作者"></el-input>
         </el-col>
@@ -53,11 +56,9 @@
       </el-col>
       <!-- 抓取小说封面图片地址 -->
       <el-col :span="24" class="tab0">
+        <el-col :span="3">抓取小说封面</el-col>
         <el-col :span="15">
-          <el-input
-            v-model="input4"
-            placeholder="抓取小说封面图片地址"
-          ></el-input>
+          <el-input v-model="input4" placeholder="抓取小说封面"></el-input>
         </el-col>
         <el-col :span="4" :offset="2">
           <el-button
@@ -71,6 +72,7 @@
       </el-col>
       <!-- 获取目录 -->
       <el-col :span="24" class="tab0">
+        <el-col :span="3">获取目录</el-col>
         <el-col :span="15">
           <el-input v-model="input5" placeholder="获取目录"></el-input>
         </el-col>
@@ -298,9 +300,14 @@ export default {
 .tab0 {
   margin-top: 5px;
   margin-bottom: 5px;
+  display: flex;
+  align-items: center;
 }
 .ml {
   height: 300px;
   overflow: auto;
+}
+/deep/ .el-dialog__body {
+  padding: 0px 20px;
 }
 </style>
