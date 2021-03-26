@@ -288,7 +288,8 @@ export default {
         user_data: a,
       });
       console.log(this.$store.state.Counter.user_data);
-      this.write_data(this.$store, this.$message);
+      this.write_data(this);
+      this.handleClose();
     },
   },
 };

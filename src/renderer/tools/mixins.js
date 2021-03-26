@@ -101,7 +101,7 @@ var mixin1 = {
       });
     },
     get_url(url, callback) {
-      return https.get(url, function (response) {
+      https.get(url, function (response) {
         var body = "";
 
         response.on("data", function (data) {
