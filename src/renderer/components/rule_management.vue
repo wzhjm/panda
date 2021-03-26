@@ -14,9 +14,7 @@
         <el-col :span="15">{{ k }}</el-col>
         <el-col :span="9">
           <el-button type="primary"> 修改 </el-button>
-          <el-button type="primary" @click="dialogVisible = true">
-            删除
-          </el-button>
+          <el-button type="primary" @click="del_btn(k)"> 删除 </el-button>
         </el-col>
       </el-col>
     </el-row>
@@ -48,6 +46,10 @@ export default {
       this.$store.commit("setState", {
         set_rule: false,
       });
+    },
+    del_btn(cur_rule) {
+      this.cur_rule = cur_rule;
+      this.dialogVisible = true;
     },
     del_rule() {},
   },

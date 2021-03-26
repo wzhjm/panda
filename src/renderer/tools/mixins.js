@@ -128,14 +128,6 @@ var mixin1 = {
       }
       return "获取失败";
     },
-    // 抓取小说简介
-    intro(str) {
-      let str2 = str.match('<img class="rentouOne.*? />.*?</a>');
-      if (str2 != null) {
-        return this.clean_div(str2[0]);
-      }
-      return "获取失败";
-    },
     // 抓取小说封面图片地址
     coverUrl(str, rs) {
       console.log(rs)
