@@ -1,11 +1,6 @@
 <template>
   <el-container class="di">
-    <el-dialog
-      title="删除提醒"
-      :visible.sync="dialogVisible"
-      width="50%"
-      :before-close="handleClose"
-    >
+    <el-dialog title="删除提醒" :visible.sync="dialogVisible" width="50%">
       <span>确认删除本书？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>

@@ -1,6 +1,6 @@
 // 定义一个混入对象
-const iconv = require("iconv-lite");
-const https = require("https");
+// const iconv = require("iconv-lite");
+// const https = require("https");
 import { remote } from 'electron'
 const fs = require("fs");
 const path = require("path");
