@@ -1,5 +1,24 @@
 <template>
   <el-container class="di">
+    <!-- 目录 -->
+    <el-drawer
+      title="目录"
+      :visible.sync="drawer"
+      :direction="direction"
+      :before-close="ml_close"
+      size="30%"
+    >
+      <el-row style="height: 100%; overflow: auto">
+        <el-col
+          :span="24"
+          :key="k"
+          v-for="(v, k) in linkList_d"
+          style="padding-bottom: 5%"
+        >
+          <span @click="set_cur_index(k + 1)"> {{ v.title }}</span>
+        </el-col>
+      </el-row>
+    </el-drawer>
     <el-aside width="8%" class="nv">
       <el-col :span="24" class="set">
         <el-tooltip content="返回" placement="right">
@@ -8,7 +27,7 @@
       </el-col>
       <el-col :span="24" class="set">
         <el-tooltip content="章节目录" placement="right">
-          <el-button class="el-icon-s-unfold"></el-button>
+          <el-button class="el-icon-s-unfold" @click="ml_open"></el-button>
         </el-tooltip>
       </el-col>
       <el-col :span="24" class="set">
@@ -54,6 +73,7 @@
         </div>
       </el-col>
     </el-main>
+    <!-- 返回顶部 -->
     <el-backtop target=".page-component__scroll" :bottom="100">
       <div
         style="
@@ -82,11 +102,14 @@ export default {
     return {
       book_data: {},
       user_data: {}, //规则
+      linkList_d: {},
       cur_index: 0, // 当前页
       max_index: 0,
       cur_title: "",
       cur_content: "",
       test: "",
+      drawer: false,
+      direction: "ltr",
     };
   },
   components: {},
@@ -96,7 +119,8 @@ export default {
     let user_data = this.$store.state.Counter.user_data;
     console.log(user_book[cur_book]);
     this.book_data = user_book[cur_book];
-    this.max_index = this.book_data.linkList_d.length;
+    this.linkList_d = this.book_data.linkList_d;
+    this.max_index = this.linkList_d.length;
     this.test = this.book_data.test;
     let logo = this.get_web(this.test);
     // console.log(logo);
@@ -108,8 +132,8 @@ export default {
 
   methods: {
     init() {
-      let url = this.book_data.linkList_d[this.cur_index].url;
-      this.cur_title = this.book_data.linkList_d[this.cur_index].title;
+      let url = this.linkList_d[this.cur_index].url;
+      this.cur_title = this.linkList_d[this.cur_index].title;
       url = this.get_top(this.test) + url;
       console.log(url);
       this.get_url(url, (rs) => {
@@ -135,6 +159,18 @@ export default {
     on_nest() {
       this.cur_index++;
       this.init();
+    },
+    ml_close() {
+      this.drawer = false;
+    },
+    ml_open() {
+      this.drawer = true;
+    },
+    set_cur_index(index) {
+      console.log("set_cur_index", index);
+      this.cur_index = index;
+      this.init();
+      this.ml_close();
     },
   },
 };
@@ -169,5 +205,8 @@ export default {
 }
 .down_nv {
   text-align: center;
+}
+/deep/ section.el-drawer__body {
+  overflow: auto;
 }
 </style>
