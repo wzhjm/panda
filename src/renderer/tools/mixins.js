@@ -63,7 +63,7 @@ var mixin1 = {
       });
     },
     read_data(store) {
-      let _path = path.join(remote.app.getPath('userData'), "/data.txt");
+      let _path = path.join(remote.app.getPath('userData'), "/user_data.txt");
       console.log(_path);
       fs.readFile(_path, "utf8", function (err, data) {
         if (!err) {
@@ -79,7 +79,7 @@ var mixin1 = {
     write_data(t) {
       let store = t.$store;
       let message = t.$message;
-      let _path = path.join(remote.app.getPath('userData'), "/data.txt");
+      let _path = path.join(remote.app.getPath('userData'), "/user_data.txt");
       console.log(_path);
       message("可写路径" + _path);
       console.log(store.state.Counter.user_data)
