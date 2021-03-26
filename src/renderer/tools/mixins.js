@@ -100,18 +100,14 @@ var mixin1 = {
         }
       });
     },
+    //请求网页
     get_url(url, callback) {
-      https.get(url, function (response) {
-        var body = "";
-
-        response.on("data", function (data) {
-          data = iconv.decode(data, "gbk");
-          body += data;
-        });
-
-        response.on("end", function () {
-          callback(body);
-        });
+      $.ajax({
+        url,
+        type: 'get',
+        success: function (response) {
+          callback(response)
+        }
       });
     },
     // 抓取小说题名
