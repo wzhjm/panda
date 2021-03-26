@@ -2,6 +2,7 @@ let state = {
   nav: "0",
   set_imported: false,
   set_new_rule: false,
+  set_rule: false,
   user_data: {},
   user_book: {},
   reflect: true,

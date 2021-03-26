@@ -3,15 +3,19 @@
     <el-aside width="20%"><navigation /> </el-aside>
     <el-container>
       <el-header class="top">
+        <el-button type="primary" plain @click="open_rule()">
+          规则管理
+        </el-button>
         <el-button type="primary" plain @click="open_new_rule()">
           新建规则
         </el-button>
         <el-button type="primary" plain @click="open_imported_online()">
           导入在线书页
         </el-button>
-        <el-button type="primary" plain>导入本地文件</el-button>
+        <!-- <el-button type="primary" plain>导入本地文件</el-button> -->
         <imported_online />
         <new_rule />
+        <rule_management />
       </el-header>
       <el-main class="main">
         <bookrack v-if="$store.state.Counter.nav == '0'" />
@@ -21,15 +25,23 @@
   </el-container>
 </template>
 <script>
+import { mixin1 } from "../tools/mixins";
 import navigation from "./navigation";
 import bookrack from "./bookrack";
 import disclaimer from "./disclaimer";
 import imported_online from "./imported_online";
 import new_rule from "./new_rule";
-import { mixin1 } from "../tools/mixins";
+import rule_management from "./rule_management";
 export default {
   name: "home",
-  components: { navigation, bookrack, disclaimer, imported_online, new_rule },
+  components: {
+    navigation,
+    bookrack,
+    disclaimer,
+    imported_online,
+    new_rule,
+    rule_management,
+  },
   mixins: [mixin1],
   data() {
     return {};
@@ -51,6 +63,11 @@ export default {
     open_new_rule() {
       this.$store.commit("setState", {
         set_new_rule: true,
+      });
+    },
+    open_rule() {
+      this.$store.commit("setState", {
+        set_rule: true,
       });
     },
   },
