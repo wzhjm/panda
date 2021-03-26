@@ -49,7 +49,7 @@ var mixin1 = {
       }
       // console.log(a)
       let user_book = JSON.stringify(a);
-      console.log(user_book)
+      // console.log(user_book)
       fs.writeFile(_path, user_book, function (err) {
         if (err) {
           console.log("写入失败！", err)

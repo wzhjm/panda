@@ -16,21 +16,61 @@
           <el-button class="el-icon-s-open"></el-button>
         </el-tooltip>
       </el-col>
+      <el-col :span="24" class="set">
+        <el-tooltip content="删除书本" placement="right">
+          <el-button class="el-icon-delete" @click="del_book()"></el-button>
+        </el-tooltip>
+      </el-col>
     </el-aside>
-    <el-main style="height: 100%; overflow: auto">
+    <el-main
+      style="height: 100%; overflow: auto"
+      class="page-component__scroll"
+    >
       <el-col :span="22" :offset="1" class="bookdi">
         <el-col :span="24" class="font0">{{ cur_title }}</el-col>
         <el-col :span="24" :key="k" v-for="(v, k) in cur_content" class="font1">
           {{ v }}
         </el-col>
-        <el-col :span="24" class="down_nv">
-          <el-link @click="on_pre" v-if="cur_index != 0">上一章</el-link>
-          <el-link @click="on_nest" v-if="cur_index != max_index">
+        <div
+          style="
+            width: 50%;
+            float: left;
+            text-align: right;
+            padding-right: 10px;
+          "
+        >
+          <span>&nbsp;</span>
+          <el-link @click="on_pre" v-if="cur_index != 0" class="font2">
+            上一章
+          </el-link>
+        </div>
+        <div
+          style="width: 50%; float: left; text-align: left; padding-left: 10px"
+        >
+          <span>&nbsp;</span>
+          <el-link @click="on_nest" v-if="cur_index != max_index" class="font2">
             下一章
           </el-link>
-        </el-col>
+        </div>
       </el-col>
     </el-main>
+    <el-backtop target=".page-component__scroll" :bottom="100">
+      <div
+        style="
+           {
+            height: 100%;
+            width: 100%;
+            background-color: #f2f5f6;
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.12);
+            text-align: center;
+            line-height: 40px;
+            color: #1989fa;
+          }
+        "
+      >
+        UP
+      </div>
+    </el-backtop>
   </el-container>
 </template>
 <script>
@@ -74,10 +114,19 @@ export default {
       console.log(url);
       this.get_url(url, (rs) => {
         this.cur_content = this.zw_content(rs, this.user_data.zw_content);
+        document.getElementsByClassName(
+          "page-component__scroll"
+        )[0].scrollTop = 0;
       });
     },
     go_home() {
       this.$router.push({ name: "home" });
+    },
+    del_book() {
+      let bookname_d = this.book_data.bookname_d;
+      this.$store.commit("del_book", bookname_d);
+      this.write_user_book(this.$store, this.$message);
+      this.go_home();
     },
     on_pre() {
       this.cur_index--;
@@ -97,6 +146,7 @@ export default {
 }
 .bookdi {
   background: #ebdcbf;
+  padding: 40px;
 }
 .nv {
   margin-left: 20px;
@@ -111,8 +161,11 @@ export default {
 }
 .font1 {
   font-size: 20px;
-  padding-left: 20px;
   line-height: 40px;
+  text-indent: 2em;
+}
+.font2 {
+  font-size: 25px;
 }
 .down_nv {
   text-align: center;

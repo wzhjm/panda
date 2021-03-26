@@ -75,6 +75,6 @@ export default {
 .main {
   background-color: #f0f2f5;
   height: 100%;
-  padding: 20px;
+  padding: 5px;
 }
 </style>

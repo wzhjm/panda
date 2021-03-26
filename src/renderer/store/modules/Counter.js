@@ -16,6 +16,9 @@ const mutations = {
     for (let k in params) {
       state[k] = params[k]
     }
+  },
+  del_book(state, book_name) {
+    delete state.user_book[book_name]
   }
 }
 

@@ -27,10 +27,7 @@
         </el-col>
       </el-col>
     </el-row>
-    <span slot="footer" class="dialog-footer">
-      <el-button @click="handleClose">取 消</el-button>
-      <el-button type="primary" @click="im_save">导入</el-button>
-    </span>
+    <span slot="footer" class="dialog-footer"> </span>
 
     <el-dialog
       title="书本预览"
@@ -49,6 +46,7 @@
         <el-col :span="14" class="title">
           <el-col :span="24" class="font0"> 书本名:{{ bookname_d }}</el-col>
           <el-col :span="24" class="font0"> 作者:{{ author_d }}</el-col>
+          <el-button type="primary" @click="im_save">导入</el-button>
         </el-col>
         <el-col :span="24" class="ml">
           <el-col :span="24" :key="k" v-for="(v, k) in linkList_d">

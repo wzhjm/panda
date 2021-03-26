@@ -14,6 +14,7 @@
           @click="onbook(v.bookname_d)"
         >
         </el-image>
+        <div class="bookname">{{ v.bookname_d }}</div>
       </el-col>
     </el-row>
   </div>
@@ -44,12 +45,15 @@ export default {
   color: #b7b9bb;
 }
 .ml {
-  margin-top: 20px;
+  margin-top: 10px;
   text-align: center;
 }
 .book {
-  width: 140px;
-  height: 200px;
-  margin-bottom: 10px;
+  width: 130px;
+  height: 180px;
+}
+.bookname {
+  font-size: 14px;
+  margin-bottom: 5px;
 }
 </style>
